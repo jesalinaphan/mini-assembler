@@ -43,9 +43,62 @@ def read_assembly_file(filename):
     
     return instructions
 
+def reg_to_bin(reg):
+    num = int(reg.replace('x', ' '))
+    return format(num, '05b')
+
+def imm_to_bin(imm_str):
+    imm = int(imm_str)          
+    if imm < 0:                 
+        imm = (1 << 12) + imm   # two's complement
+    return format(imm, '012b') 
+
 def compute_machine_code(command_list):
     # convert each command list like [addi, x1, x2, 3] to  machine code (hex string) and return hex_string
-    return 
+    instruct = command_list[0]
+
+    if instruct in ["addi", "slli", "srli", "ori", "andi" ]:
+        rd = reg_to_bin(command_list[0])
+        rs1 = reg_to_bin(command_list[1])
+        imm = imm_to_bin(command_list[3])
+
+        opcode = 0b0010011
+
+        funct3_map = {
+            "addi":0b000,
+            "ori":0b110,
+            "andi":0b111,
+            "slli":0b001,
+            "srli":0b101
+        }
+
+        funct3 = funct3_map[instruct]
+
+        if instruct in ["slli","srli"]:
+            funct7 = 0b0000000
+            shamt = imm 
+
+            machine = (
+                (funct7 << 25) |
+                (shamt << 20) |
+                (rs1 << 15) |
+                (funct3 << 12) |
+                (rd << 7) |
+                opcode
+            )
+
+        else:
+            imm = imm 
+
+            machine = (
+                (imm << 20) |
+                (rs1 << 15) |
+                (funct3 << 12) |
+                (rd << 7) |
+                opcode
+            )
+
+    return format(machine, 'x')
 
 if __name__ == "__main__":
     main()

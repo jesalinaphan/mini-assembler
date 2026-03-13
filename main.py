@@ -105,20 +105,10 @@ def shamt_to_bin(shamt_str):
     return format(shamt, '05b')
 
 def imm_to_bin_branch(imm_str):
-    
     imm = int(imm_str)
-    
-    # 1111 1111 1100
-    # 1111 1111 1100
-    # 1111 1111 1110 0
-    
-    imm &= (1 << 13) - 1 #two's complement
-    
-    bin = format(imm, '013b')
-    
-    bin = bin[1:]
-    
-    return bin
+    if imm < 0:                 
+        imm = (1 << 13) + imm   # two's complement
+    return format(imm, '013b') # 13 bits then drop the lsb
 
 def compute_machine_code(command_list):
     # convert each command list like [addi, x1, x2, 3] to  machine code (hex string) and return hex_string

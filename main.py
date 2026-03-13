@@ -137,7 +137,7 @@ def convert_R_type(command_list):
 
     binary_str = funct7 + rs2 + rs1 + func3 + rd + opcode
     integer = int(binary_str, 2)
-    hex_str = format(integer, '08x')
+    hex_str = "0x" + format(integer, '08x')
 
     return hex_str
 
@@ -165,7 +165,7 @@ def convert_I_type(command_list):
         binary_str = imm + rs1 + funct3 + rd + opcode
 
     integer = int(binary_str, 2)
-    hex_str = format(integer, '08x')
+    hex_str = "0x" + format(integer, '08x')
 
     return hex_str
 
@@ -182,7 +182,7 @@ def convert_branch_type(command_list):
 
     binary_str = imm[0] + imm[2:8] + rs2 + rs1 + func3 + imm[8:12] + imm[1] + opcode
     integer = int(binary_str, 2)
-    hex_str = format(integer, '08x')
+    hex_str = "0x" + format(integer, '08x')
 
     return hex_str
 

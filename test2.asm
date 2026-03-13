@@ -9,6 +9,6 @@ srli t3, t3, 1
 xor t1, t0, t1
 ori t5, t1, 5
 andi t3, t3, 8
-beq x0, x0, 8
+beq x0, x0, 4
 addi t5, t5, 1
 addi t5, t5, 5

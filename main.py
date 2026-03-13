@@ -14,7 +14,8 @@ def main():
 
     for instr in instructions:
         machine_code = compute_machine_code(instr)
-        output_list.append(machine_code)
+        if machine_code != None:
+            output_list.append(machine_code)
     
     for code in output_list:
         print(code)
@@ -96,10 +97,24 @@ def shamt_to_bin(shamt_str):
     return format(shamt, '05b')
 
 def imm_to_bin_branch(imm_str):
+    
     imm = int(imm_str)
-    if imm < 0:                 
-        imm = (1 << 13) + imm   # two's complement
-    return format(imm, '013b') # 13 bits then drop the lsb    
+    
+
+    
+    # 1111 1111 1100
+    # 1111 1111 1100
+    # 1111 1111 1110 0
+    
+    imm &= (1 << 13) - 1 #two's complement
+
+    
+    bin = format(imm, '013b')
+    
+    
+    bin = bin[1:]
+    
+    return bin
 
 def compute_machine_code(command_list):
     # convert each command list like [addi, x1, x2, 3] to  machine code (hex string) and return hex_string
@@ -111,6 +126,8 @@ def compute_machine_code(command_list):
         machine_code = convert_I_type(command_list)
     elif instruct in ["beq", "bne"]:
         machine_code = convert_branch_type(command_list)
+    elif instruct == "done:":
+        return
     else:
         print("Unknown command type")
         return
@@ -178,9 +195,11 @@ def convert_branch_type(command_list):
     rs2 = reg_to_bin(command_list[2])
     rs1 = reg_to_bin(command_list[1])
     func3 = branch_type[command_list[0]]
+    
     opcode = "1100011"
-
+    
     binary_str = imm[0] + imm[2:8] + rs2 + rs1 + func3 + imm[8:12] + imm[1] + opcode
+    
     integer = int(binary_str, 2)
     hex_str = format(integer, '08x')
 

@@ -1,5 +1,13 @@
 import sys
 
+'''
+Partners: Jesalina Phan, Ryan Dang
+
+Collaboration: We split the code for the instructions in half. Ryan worked on
+translating the I instructions and the mul and Jesalina worked on translating the rest.
+Jesalina wrote up the logic to read from the file and Ryan did the testing and debugging.
+'''
+
 def main():
     # Get filename from command line argument, or use default
     if len(sys.argv) < 2:
@@ -100,17 +108,13 @@ def imm_to_bin_branch(imm_str):
     
     imm = int(imm_str)
     
-
-    
     # 1111 1111 1100
     # 1111 1111 1100
     # 1111 1111 1110 0
     
     imm &= (1 << 13) - 1 #two's complement
-
     
     bin = format(imm, '013b')
-    
     
     bin = bin[1:]
     
